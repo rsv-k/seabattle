@@ -42,7 +42,7 @@ router.delete('/', (req, res, next) => {
 
 router.put('/', (req, res, next) => {
   const updatedUserInfo = req.body.updatedUserInfo;
-  if (!updatedUserInfo ) {
+  if (!updatedUserInfo) {
     return res.status(400).json({msg: 'No content provided'});
   }
 

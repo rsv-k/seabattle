@@ -21,23 +21,22 @@ export class SeabattleService {
     // if id doesn't exit (aka user doesn't exist)
     // create a new one
     if (!id) {
-      return this.startOver();
+      return this.startOver(true);
     }
 
     this.http.get<{msg: string, data: UserInfo}>(this.server + id)
       .subscribe((response) => {
-        if (!response) {
+        if (!response.data) {
           // if data in db disappeared
           localStorage.removeItem('id');
-          return this.startOver();
+          return this.startOver(true);
         }
         this.updateListener(response);
       });
   }
 
-  updateUserInfo(message) {
+  updateUserInfo() {
     this.http.put<{msg: string, data: UserInfo}>(this.server, {
-      msg: message,
       updatedUserInfo: this.userInfoData
     })
       .subscribe((response) => {
@@ -50,9 +49,10 @@ export class SeabattleService {
     return this.updatedUserInfoData.asObservable();
   }
 
-  startOver() {
-    this.http.delete<{msg: string, data: UserInfo}>(this.server)
+  startOver(isNewUser = false) {
+    this.http.delete<{msg: string, data: UserInfo}>(this.server + (isNewUser ? 1 : this.userInfoData._id))
       .subscribe((response) => {
+
         this.updateListener(response);
 
         // if new user was created, save his id in localstorage 
@@ -76,7 +76,6 @@ export class SeabattleService {
   }
 
   updateCell(x, y) {
-    let message =  `User shot x:${x}, y: ${y}. Result: `;
     let result: any;
     let shotShipIndex: number;
     let shotCell: Cell;
@@ -113,14 +112,19 @@ export class SeabattleService {
 
       result = 'miss';
     }
+    this.userInfoData.history.push(`User shot x:${x}, y: ${y}. Result: ` + result);
 
-    // check if all ships were destroyed
-    if (!this.userInfoData.ships.length) {
-      message = 'All ships were destroyed';
-      result = '';
+
+    if (this.isGameOver()) {
+      this.userInfoData.history.push('All ships were destroyed');
     }
 
-    this.updateUserInfo(message + result);
+    this.updateUserInfo();
     return shotCell;
   }
+
+  isGameOver() {
+    return this.userInfoData.ships.length === 0;
+  }
 }
+

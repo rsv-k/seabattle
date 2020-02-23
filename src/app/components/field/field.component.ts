@@ -21,7 +21,7 @@ export class FieldComponent implements OnInit {
     this.seabattleService.getUserInfo();
     this.seabattleService.userInfoDataUpdateListener()
       .subscribe((data) => {
-
+        console.log(data);
         for (const cell of data.shotCells) {
           this.field[cell.y][cell.x] = cell;
         }
@@ -29,6 +29,10 @@ export class FieldComponent implements OnInit {
       });
   }
 
+  startOver() {
+    this.seabattleService.startOver();
+    this.field = createField();
+  }
 }
 
 

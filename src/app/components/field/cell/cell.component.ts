@@ -18,7 +18,7 @@ export class CellComponent implements OnInit {
   }
 
   shoot() {
-    if (this.info.condition !== 'alive') {
+    if (this.info.condition !== 'alive' || this.seabattleService.isGameOver()) {
       return;
     }
 

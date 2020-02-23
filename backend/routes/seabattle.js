@@ -13,10 +13,11 @@ router.get('/:id', (req, res, next) => {
     });
 });
 
-router.delete('/', (req, res, next) => {
-  userSchema.findOne({_id: req.body.id})
+router.delete('/:id', (req, res, next) => {
+  userSchema.findOne({_id: req.params.id})
     // if user exists make reset ships and shotCells properties
     .then((userInfo) => {
+
       userInfo.ships = createShips();
       userInfo.shotCells = [];
       userInfo.history.push('New game started');
@@ -25,6 +26,7 @@ router.delete('/', (req, res, next) => {
     })
     // if user doesn't exit than create one
     .catch(() => {
+  
       const ships = createShips();
       const userInfo = new userSchema({
         ships,
@@ -46,9 +48,7 @@ router.put('/', (req, res, next) => {
     return res.status(400).json({msg: 'No content provided'});
   }
 
-  updatedUserInfo.history.push(req.body.msg);
-
-  userSchema.findOneAndUpdate({_id: updatedUserInfo._id}, updatedUserInfo, {new: true})
+  userSchema.findOneAndUpdate({_id: updatedUserInfo._id}, updatedUserInfo, {new: true, useFindAndModify: false})
     .then((userInfo) => {
       res.status(200).json({msg: 'userInfo successfully updated', data: userInfo});
     })

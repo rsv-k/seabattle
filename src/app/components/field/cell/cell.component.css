@@ -1,0 +1,30 @@
+div {
+  width: 40px;
+  height: 40px;
+}
+
+.letter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid transparent;
+}
+
+.cell {
+  border: 1px solid #000;
+}
+
+.invisible {
+  opacity: 0;
+}
+
+.shotEmpty {
+  background: rgba(0, 0, 0, 0.5);
+}
+.shotShip {
+  background: orange;
+}
+
+.destroyed {
+  background: red;
+}

@@ -4,6 +4,21 @@ const mongoose = require('mongoose');
 const port = process.env.port || 3000;
 const seabattleRouter = require('./backend/routes/seabattle');
 
+
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET, PUT, DELETE, OPTIONS"
+  );
+  next();
+});
+
+
 app.use(express.json());
 app.use('/api/seabattle', seabattleRouter);
 

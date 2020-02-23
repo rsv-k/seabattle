@@ -4,7 +4,7 @@ const { createShips } = require('../modules/seabattle');
 const userSchema = require('../schemas/userInfo');
 
 router.get('/:id', (req, res, next) => {
-  userSchema.find({_id: req.params.id})
+  userSchema.findOne({_id: req.params.id})
     .then((userInfo) => {
       res.status(200).json({msg: 'userInfo fetched successfully', data: userInfo});
     })

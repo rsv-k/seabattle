@@ -9,31 +9,25 @@ import { SeabattleService } from '../../../services/seabattle.service';
 export class CellComponent implements OnInit {
   @Input() value;
   @Input() info;
+  @Input() hash;
 
   constructor(private seabattleService: SeabattleService) { }
 
   ngOnInit(): void {
-    if (this.value) {
-      return;
-    }
 
-    const hash = this.seabattleService.getShotCellsHashed();
-
-    if (hash[this.info.y + '-' + this.info.x]) {
-      this.info = hash[this.info.y + '-' + this.info.x];
-    }
   }
 
   shoot() {
     if (this.info.condition !== 'alive') {
       return;
     }
-    const ships = this.seabattleService.getShips();
 
-    const shipCell = ships.find(ship => ship.find(cell => cell.x === this.info.x && cell.y === this.info.y));
-    console.log(shipCell);
-    // this.info.condition = 'shot';
-
+    const shot = this.seabattleService.updateCell(this.info.x, this.info.y);
+    if (shot) {
+      this.info = shot;
+    } else {
+      this.info.condition = 'shot';
+    }
   }
 
 }

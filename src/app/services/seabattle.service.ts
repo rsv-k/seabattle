@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Subject } from 'rxjs';
 import { UserInfo } from '../models/userInfo.modules';
+import { Cell } from '../models/cell.modules';
 
 
 @Injectable({
@@ -11,7 +12,6 @@ export class SeabattleService {
   private server = 'http://localhost:3000/api/seabattle/';
   userInfoData: UserInfo;
   updatedUserInfoData = new Subject<UserInfo>();
-  hashedShotCells = {};
 
   constructor(private http: HttpClient) { }
 
@@ -26,16 +26,22 @@ export class SeabattleService {
 
     this.http.get<{msg: string, data: UserInfo}>(this.server + id)
       .subscribe((response) => {
+        if (!response) {
+          // if data in db disappeared
+          localStorage.removeItem('id');
+          return this.startOver();
+        }
         this.updateListener(response);
       });
   }
 
-  updateUserInfo(x, y, result) {
+  updateUserInfo(message) {
     this.http.put<{msg: string, data: UserInfo}>(this.server, {
-      msg: `User shot x:${x}, y: ${y}. Result: ${result}`,
+      msg: message,
       updatedUserInfo: this.userInfoData
     })
       .subscribe((response) => {
+
         this.updateListener(response);
     });
   }
@@ -56,24 +62,65 @@ export class SeabattleService {
   }
 
   getShotCellsHashed() {
-    return this.hashedShotCells;
-  }
+    const hash = {};
+    for (const cell of this.userInfoData.shotCells) {
+      hash[cell.y + '-' + cell.x] = cell;
+    }
 
-  getShotCells() {
-    return this.userInfoData.shotCells;
-  }
-  getShips() {
-    return this.userInfoData.ships;
+    return hash;
   }
 
   updateListener(response) {
-    this.userInfoData = response.data[0];
+    this.userInfoData = response.data;
     this.updatedUserInfoData.next(this.userInfoData);
+  }
 
-    for (const cell of this.userInfoData.shotCells) {
-      if (!this.hashedShotCells[cell.y + '-' + cell.x]) {
-        this.hashedShotCells[cell.y + '-' + cell.x] = cell;
+  updateCell(x, y) {
+    let message =  `User shot x:${x}, y: ${y}. Result: `;
+    let result: any;
+    let shotShipIndex: number;
+    let shotCell: Cell;
+
+    const shotShip = this.userInfoData.ships.find((ship, index) => {
+      return ship.some((cell) => {
+        if (cell.x === x && cell.y === y) {
+          shotShipIndex = index;
+          this.userInfoData.shotCells.push(cell);
+          cell.condition = 'shot';
+          shotCell = cell;
+
+          result = 'shot';
+          return cell;
+        }
+      });
+    });
+
+    if (shotShip && shotShip.every(cell => cell.condition === 'shot')) {
+      const hashedShotCells = this.getShotCellsHashed();
+      for (const cell of shotShip) {
+        hashedShotCells[cell.y + '-' + cell.x].condition = 'destroyed';
       }
+      // delete ship
+      this.userInfoData.ships.splice(shotShipIndex, 1);
+      result = 'destroyed';
+    } else if (!shotShip) {
+      this.userInfoData.shotCells.push({
+        y,
+        x,
+        value: 0,
+        condition: 'shot'
+      });
+
+      result = 'miss';
     }
+
+    // check if all ships were destroyed
+    if (!this.userInfoData.ships.length) {
+      message = 'All ships were destroyed';
+      result = '';
+    }
+
+    this.updateUserInfo(message + result);
+    return shotCell;
   }
 }

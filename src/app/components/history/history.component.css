@@ -1,0 +1,9 @@
+.messages {
+  width: 400px;
+  height: 400px;
+  overflow-y: scroll;
+}
+
+h1 {
+  text-align: center;
+}

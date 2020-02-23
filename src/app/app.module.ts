@@ -6,12 +6,14 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { FieldComponent } from './components/field/field.component';
 import { CellComponent } from './components/field/cell/cell.component';
+import { HistoryComponent } from './components/history/history.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     FieldComponent,
-    CellComponent
+    CellComponent,
+    HistoryComponent
   ],
   imports: [
     BrowserModule,

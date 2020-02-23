@@ -7,13 +7,27 @@
     </ul>
 </div>
 <div class="main" >
+  <div class="field">
     <div class="row">
         <app-cell *ngFor = "let letter of letters" [value] = "letter"></app-cell>
       </div>
       
-      <div class="row" *ngFor = "let row of field; let y = index">
-        <app-cell [value] = "y + 1"></app-cell>
-        <app-cell *ngFor = "let cell of row"
-        [info] = "cell"></app-cell>
-      </div>
+    <div class="row" *ngFor = "let row of field; let y = index">
+      <app-cell [value] = "y + 1"></app-cell>
+      <app-cell *ngFor = "let cell of row"
+      [info] = "cell"></app-cell>
+    </div>
+  </div>
+
+  <div class="history">
+    <app-history [history] = "history"></app-history>
+  </div>
+</div>
+
+<div class="message-over" *ngIf = "isGameOver">
+  <h2>Game over</h2>
+  <div class="buttons">
+    <button class="newGame button-small" (click) = "startOver()">Start over?</button>
+    <button class="reject button-small" (click) = "reject()">no</button>
+  </div>
 </div>

@@ -10,8 +10,8 @@ import { Cell } from '../../models/cell.modules';
 export class FieldComponent implements OnInit {
   rowsAndColumns = new Array(10).fill(0);
   field: Cell[][];
+  isGameOver = false;
   letters = ['empty', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
-  hash;
   history;
 
   constructor(private seabattleService: SeabattleService) { }
@@ -21,17 +21,24 @@ export class FieldComponent implements OnInit {
     this.seabattleService.getUserInfo();
     this.seabattleService.userInfoDataUpdateListener()
       .subscribe((data) => {
-        console.log(data);
+        
         for (const cell of data.shotCells) {
           this.field[cell.y][cell.x] = cell;
         }
 
+        this.history = data.history.reverse();
+        this.isGameOver = this.seabattleService.isGameOver();
       });
   }
 
   startOver() {
     this.seabattleService.startOver();
     this.field = createField();
+    this.isGameOver = false;
+  }
+
+  reject() {
+    this.isGameOver = false;
   }
 }
 

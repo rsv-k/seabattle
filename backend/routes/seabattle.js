@@ -6,10 +6,10 @@ const userSchema = require('../schemas/userInfo');
 router.get('/:id', (req, res, next) => {
   userSchema.find({_id: req.params.id})
     .then((userInfo) => {
-      res.status(200).json({msg: 'user fetched successfully', data: userInfo});
+      res.status(200).json({msg: 'userInfo fetched successfully', data: userInfo});
     })
     .catch(() => {
-      res.status(404).json({msg: 'user not found'});
+      res.status(404).json({msg: 'userInfo not found'});
     });
 });
 
@@ -21,7 +21,6 @@ router.delete('/', (req, res, next) => {
       userInfo.shotCells = [];
       userInfo.history.push('New game started');
       
-      userInfo = userInfo;
       return userInfo.save();
     })
     // if user doesn't exit than create one
@@ -36,15 +35,15 @@ router.delete('/', (req, res, next) => {
       return userInfo.save();
     })
     .then((userInfo) => {
-      res.status(200).json({msg: 'New game started', id: userInfo._id})
+      res.status(200).json({msg: 'New game started', data: userInfo})
     });
   
 });
 
 router.put('/', (req, res, next) => {
   const updatedUserInfo = req.body.updatedUserInfo;
-  if (!updatedUserInfo) {
-    return;
+  if (!updatedUserInfo ) {
+    return res.status(400).json({msg: 'No content provided'});
   }
 
   updatedUserInfo.history.push(req.body.msg);

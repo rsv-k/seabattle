@@ -26,7 +26,7 @@ export class FieldComponent implements OnInit {
           this.field[cell.y][cell.x] = cell;
         }
 
-        this.history = data.history.reverse();
+        this.history = data.history;
         this.isGameOver = this.seabattleService.isGameOver();
       });
   }

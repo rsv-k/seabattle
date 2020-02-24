@@ -112,6 +112,7 @@ export class SeabattleService {
 
       result = 'miss';
     }
+    this.userInfoData.history.reverse();
     this.userInfoData.history.push(`User shot x:${x}, y: ${y}. Result: ` + result);
 
 

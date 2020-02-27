@@ -33,15 +33,14 @@ export class SeabattleService {
         }
         this.updateListener(response);
       });
+
   }
 
   updateUserInfo() {
-    this.http.put<{msg: string, data: UserInfo}>(this.server, {
+    this.http.put<{msg: string}>(this.server, {
       updatedUserInfo: this.userInfoData
     })
       .subscribe((response) => {
-
-        this.updateListener(response);
     });
   }
 
@@ -50,9 +49,11 @@ export class SeabattleService {
   }
 
   startOver(isNewUser = false) {
+    if (!this.userInfoData) {
+      isNewUser = true;
+    }
     this.http.delete<{msg: string, data: UserInfo}>(this.server + (isNewUser ? 1 : this.userInfoData._id))
       .subscribe((response) => {
-
         this.updateListener(response);
 
         // if new user was created, save his id in localstorage 
@@ -112,7 +113,6 @@ export class SeabattleService {
 
       result = 'miss';
     }
-    this.userInfoData.history.reverse();
     this.userInfoData.history.push(`User shot x:${x}, y: ${y}. Result: ` + result);
 
 

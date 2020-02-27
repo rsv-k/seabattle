@@ -2,8 +2,14 @@
   width: 400px;
   height: 400px;
   overflow-y: scroll;
+  display: flex;
+  flex-direction: column-reverse;
 }
 
 h1 {
   text-align: center;
+}
+
+p {
+  align-self: flex-start;
 }

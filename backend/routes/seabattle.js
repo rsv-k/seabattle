@@ -6,11 +6,10 @@ const userSchema = require('../schemas/userInfo');
 router.get('/:id', (req, res, next) => {
   userSchema.findOne({_id: req.params.id})
     .then((userInfo) => {
-      userInfo.history.reverse();
       res.status(200).json({msg: 'userInfo fetched successfully', data: userInfo});
     })
     .catch(() => {
-      res.status(404).json({msg: 'userInfo not found'});
+      res.status(404).json({msg: 'userInfo not found', data: null});
     });
 });
 
@@ -38,7 +37,6 @@ router.delete('/:id', (req, res, next) => {
       return userInfo.save();
     })
     .then((userInfo) => {
-      userInfo.history.reverse();
       res.status(200).json({msg: 'New game started', data: userInfo})
     });
   
@@ -52,8 +50,7 @@ router.put('/', (req, res, next) => {
 
   userSchema.findOneAndUpdate({_id: updatedUserInfo._id}, updatedUserInfo, {new: true, useFindAndModify: false})
     .then((userInfo) => {
-      userInfo.history.reverse();
-      res.status(200).json({msg: 'userInfo successfully updated', data: userInfo});
+      res.status(200).json({msg: 'userInfo successfully updated'});
     })
     .catch(() => {
       res.status(404).json({msg: 'userInfo is not found'});

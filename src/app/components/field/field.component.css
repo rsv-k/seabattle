@@ -3,7 +3,9 @@
   justify-content: space-between;
   flex-wrap: wrap;
 }
-
+.interface {
+  margin-bottom: 40px;
+}
 
 .row {
   display: flex;

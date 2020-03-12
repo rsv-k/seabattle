@@ -41,7 +41,8 @@ export class SeabattleService {
       updatedUserInfo: this.userInfoData
     })
       .subscribe((response) => {
-    });
+        this.updateListener(response);
+      });
   }
 
   userInfoDataUpdateListener() {
@@ -76,26 +77,28 @@ export class SeabattleService {
     this.updatedUserInfoData.next(this.userInfoData);
   }
 
-  updateCell(x, y) {
+  updateCell(x: number, y: number) {
     let result: any;
     let shotShipIndex: number;
     let shotCell: Cell;
 
+    // find the shot cell
     const shotShip = this.userInfoData.ships.find((ship, index) => {
       return ship.some((cell) => {
         if (cell.x === x && cell.y === y) {
           shotShipIndex = index;
           this.userInfoData.shotCells.push(cell);
-          cell.condition = 'shot';
+          cell.condition = 'wounded';
           shotCell = cell;
 
-          result = 'shot';
+          result = 'wounded';
           return cell;
         }
       });
     });
 
-    if (shotShip && shotShip.every(cell => cell.condition === 'shot')) {
+
+    if (shotShip && shotShip.every(cell => cell.condition === 'wounded')) {
       const hashedShotCells = this.getShotCellsHashed();
       for (const cell of shotShip) {
         hashedShotCells[cell.y + '-' + cell.x].condition = 'destroyed';
@@ -108,10 +111,10 @@ export class SeabattleService {
         y,
         x,
         value: 0,
-        condition: 'shot'
+        condition: 'empty'
       });
 
-      result = 'miss';
+      result = 'empty';
     }
     this.userInfoData.history.push(`User shot x:${x}, y: ${y}. Result: ` + result);
 
@@ -121,7 +124,7 @@ export class SeabattleService {
     }
 
     this.updateUserInfo();
-    return shotCell;
+    return result;
   }
 
   isGameOver() {

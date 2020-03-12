@@ -11,8 +11,8 @@ export class FieldComponent implements OnInit {
   rowsAndColumns = new Array(10).fill(0);
   field: Cell[][];
   isGameOver = false;
-  letters = ['empty', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
-  history;
+  letters = ['', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
+  history: string[];
 
   constructor(private seabattleService: SeabattleService) { }
 
@@ -21,7 +21,6 @@ export class FieldComponent implements OnInit {
     this.seabattleService.getUserInfo();
     this.seabattleService.userInfoDataUpdateListener()
       .subscribe((data) => {
-        
         for (const cell of data.shotCells) {
           this.field[cell.y][cell.x] = cell;
         }
@@ -54,7 +53,7 @@ function createField() {
         x,
         value: 0,
         condition: 'alive'
-      }
+      };
     }
   }
 

@@ -5,15 +5,15 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { FieldComponent } from './components/field/field.component';
-import { CellComponent } from './components/field/cell/cell.component';
 import { HistoryComponent } from './components/history/history.component';
+import { CellDirective } from './directives/cell.directive';
 
 @NgModule({
   declarations: [
     AppComponent,
     FieldComponent,
-    CellComponent,
-    HistoryComponent
+    HistoryComponent,
+    CellDirective
   ],
   imports: [
     BrowserModule,

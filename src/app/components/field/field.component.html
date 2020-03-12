@@ -9,13 +9,13 @@
 <div class="main" >
   <div class="field">
     <div class="row">
-        <app-cell *ngFor = "let letter of letters" [value] = "letter"></app-cell>
-      </div>
+      <div appCell *ngFor = "let letter of letters" class = "symbol">{{letter}}</div>
+    </div>
       
     <div class="row" *ngFor = "let row of field; let y = index">
-      <app-cell [value] = "y + 1"></app-cell>
-      <app-cell *ngFor = "let cell of row"
-      [info] = "cell"></app-cell>
+      <div appCell class = "symbol">{{y + 1}}</div>
+      <div *ngFor = "let cell of row; let x = index" appCell
+      [info] = "cell"></div>
     </div>
   </div>
 

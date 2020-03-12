@@ -51,7 +51,7 @@ router.put('/', (req, res, next) => {
 
   userSchema.findOneAndUpdate({_id: updatedUserInfo._id}, updatedUserInfo, {new: true, useFindAndModify: false})
     .then((userInfo) => {
-      res.status(200).json({msg: 'userInfo successfully updated'});
+      res.status(200).json({msg: 'userInfo successfully updated', data: userInfo});
     })
     .catch(() => {
       res.status(404).json({msg: 'userInfo is not found'});

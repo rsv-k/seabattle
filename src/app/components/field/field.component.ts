@@ -51,7 +51,6 @@ function createField() {
       field[y][x] = {
         y,
         x,
-        value: 0,
         condition: 'alive'
       };
     }

@@ -32,6 +32,8 @@ export class SeabattleService {
           return this.startOver(true);
         }
         this.updateListener(response);
+      }, () => {
+        this.startOver(true);
       });
 
   }
@@ -50,9 +52,6 @@ export class SeabattleService {
   }
 
   startOver(isNewUser = false) {
-    if (!this.userInfoData) {
-      isNewUser = true;
-    }
     this.http.delete<{msg: string, data: UserInfo}>(this.server + (isNewUser ? 1 : this.userInfoData._id))
       .subscribe((response) => {
         this.updateListener(response);
@@ -80,7 +79,6 @@ export class SeabattleService {
   updateCell(x: number, y: number) {
     let result: any;
     let shotShipIndex: number;
-    let shotCell: Cell;
 
     // find the shot cell
     const shotShip = this.userInfoData.ships.find((ship, index) => {
@@ -89,7 +87,6 @@ export class SeabattleService {
           shotShipIndex = index;
           this.userInfoData.shotCells.push(cell);
           cell.condition = 'wounded';
-          shotCell = cell;
 
           result = 'wounded';
           return cell;
@@ -97,10 +94,9 @@ export class SeabattleService {
       });
     });
 
-
     if (shotShip && shotShip.every(cell => cell.condition === 'wounded')) {
       const hashedShotCells = this.getShotCellsHashed();
-      for (const cell of shotShip) {
+      for (const cell of this.userInfoData.ships[shotShipIndex]) {
         hashedShotCells[cell.y + '-' + cell.x].condition = 'destroyed';
       }
       // delete ship
@@ -110,14 +106,12 @@ export class SeabattleService {
       this.userInfoData.shotCells.push({
         y,
         x,
-        value: 0,
         condition: 'empty'
       });
 
       result = 'empty';
     }
     this.userInfoData.history.push(`User shot x:${x}, y: ${y}. Result: ` + result);
-
 
     if (this.isGameOver()) {
       this.userInfoData.history.push('All ships were destroyed');

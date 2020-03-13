@@ -1,0 +1,22 @@
+.message-over {
+  width: 200px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  z-index: 9999;
+  border: 1px solid #000;
+  text-align: center;
+}
+
+.reject {
+  padding: 10px 0;
+  background: orangered;
+  color: #fff;
+  outline: none;
+}
+
+button {
+  width: 80px;
+}

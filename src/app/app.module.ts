@@ -7,13 +7,17 @@ import { AppComponent } from './app.component';
 import { FieldComponent } from './components/field/field.component';
 import { HistoryComponent } from './components/history/history.component';
 import { CellDirective } from './directives/cell.directive';
+import { InterfaceComponent } from './components/interface/interface.component';
+import { AlertComponent } from './components/alert/alert.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     FieldComponent,
     HistoryComponent,
-    CellDirective
+    CellDirective,
+    InterfaceComponent,
+    AlertComponent
   ],
   imports: [
     BrowserModule,

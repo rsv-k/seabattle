@@ -3,66 +3,8 @@
   justify-content: space-between;
   flex-wrap: wrap;
 }
-.interface {
-  margin-bottom: 40px;
-}
 
 .row {
   display: flex;
   user-select: none;
-}
-
-.newGame {
-  width: 100px;
-  padding: 10px 0;
-  background: teal;
-  color: #fff;
-  outline: none;
-  vertical-align: top;
-}
-
-span {
- padding: 2px 10px;
- margin-right: 10px;
-}
-
-ul {
-  list-style: none;
-  display: inline-flex;
-}
-
-.empty {
-  background: rgba(0, 0, 0, 0.5);
-}
-.wounded {
-  background: orange;
-}
-.destroyed {
-  background: red;
-}
-
-li {
-  margin-right: 15px;
-}
-
-.message-over {
-  width: 200px;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  background: #fff;
-  z-index: 9999;
-  border: 1px solid #000;
-  text-align: center;
-}
-
-.button-small {
-  width: 80px;
-}
-.reject {
-  padding: 10px 0;
-  background: orangered;
-  color: #fff;
-  outline: none;
 }

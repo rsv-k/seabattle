@@ -10,7 +10,7 @@ export class CellDirective implements OnInit {
 
   constructor(private elemRef: ElementRef,
               private seabattleService: SeabattleService) { }
-
+ 
   ngOnInit() {
     const elem = this.elemRef.nativeElement;
     if (this.info) {

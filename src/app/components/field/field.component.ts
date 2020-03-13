@@ -29,7 +29,7 @@ export class FieldComponent implements OnInit {
         this.isGameOver = this.seabattleService.isGameOver();
       });
   }
-
+ 
   startOver() {
     this.seabattleService.startOver();
     this.field = createField();

@@ -1,0 +1,36 @@
+div {
+  margin-bottom: 40px;
+}
+
+button {
+  width: 100px;
+  padding: 10px 0;
+  background: teal;
+  color: #fff;
+  outline: none;
+  vertical-align: top;
+}
+
+span {
+  padding: 2px 10px;
+  margin-right: 10px;
+}
+
+ ul {
+  list-style: none;
+  display: inline-flex;
+}
+
+.empty {
+  background: rgba(0, 0, 0, 0.5);
+}
+.wounded {
+  background: orange;
+}
+.destroyed {
+  background: red;
+}
+
+li {
+  margin-right: 15px;
+}
